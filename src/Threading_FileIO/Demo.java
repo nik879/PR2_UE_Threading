@@ -10,8 +10,8 @@ public class Demo {
     public static void main(String[] args) throws GenericFileLoaderException, InterruptedException {
         //var
         String path = "C:\\Users\\nikikachelmaier\\Desktop\\";
-        ArrayList<TextFileLoader> tfs = new ArrayList<>();
-        ArrayList<BinaryFileLoader> bfs = new ArrayList<>();
+        /*ArrayList<TextFileLoader> tfs = new ArrayList<>();
+        ArrayList<BinaryFileLoader> bfs = new ArrayList<>();*/
         ArrayList<Thread> threads = new ArrayList<>();
 
         //Eingabe
@@ -24,15 +24,18 @@ public class Demo {
         String[] parts = files.split(";");
         for (int i = 0; i < parts.length; i++) {
             if (parts[i].contains(".txt")) {
-                tfs.add(new TextFileLoader(path + parts[i]));
-            } else bfs.add(new BinaryFileLoader(path + parts[i]));
+//                tfs.add(new TextFileLoader(path + parts[i]));
+                threads.add(new Thread(new TextFileLoader(path + parts[i])));
+            } else threads.add(new Thread(new BinaryFileLoader(path + parts[i])));
+
+//                bfs.add(new BinaryFileLoader(path + parts[i]));
         }
-        for (BinaryFileLoader bf : bfs) {
+        /*for (BinaryFileLoader bf : bfs) {
             threads.add(new Thread(bf));
         }
         for (TextFileLoader tf : tfs) {
             threads.add(new Thread(tf));
-        }
+        }*/
         for (Thread thread : threads) {
             thread.start();
         }
@@ -41,11 +44,8 @@ public class Demo {
         }
 
         //Souts
-        for (TextFileLoader tf : tfs) {
-            System.out.println(tf.getContent());
-        }
-        for (BinaryFileLoader bf : bfs) {
-            System.out.println(bf.getBytes());
+        for (Thread thread : threads) {
+            System.out.println(thread);
         }
         System.out.println(Countbytes);
 
