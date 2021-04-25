@@ -2,9 +2,7 @@ package Transactions;
 
 import Transactions.Transaction;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class TransactionObjectHandler {
@@ -15,7 +13,8 @@ public class TransactionObjectHandler {
 
     }
 
-    public void saveTransactions(ArrayList<Transaction> transactions) throws TransactionObjectException {
+    /*public void saveTransactions(ArrayList<Transaction> transactions) throws
+    TransactionObjectException {
 
         //ohne Objektoutputstream - habs in der Angabe überlesen
 
@@ -32,6 +31,21 @@ public class TransactionObjectHandler {
             bw.newLine();
             bw.flush();
 
+        } catch (IOException e) {
+            throw new TransactionObjectException(e);
+        }
+    }*/
+
+    public void saveTransactions(ArrayList<Transaction> transactions) throws TransactionObjectException {
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(writePath));
+             BufferedOutputStream bs = new BufferedOutputStream(os)) {
+            for (Transaction transaction : transactions) {
+                os.writeObject(transaction);
+            }
+            os.writeObject(null);
+            os.flush();
+        } catch (FileNotFoundException e) {
+            throw new TransactionObjectException(e);
         } catch (IOException e) {
             throw new TransactionObjectException(e);
         }

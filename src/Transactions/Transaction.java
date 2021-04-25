@@ -1,6 +1,8 @@
 package Transactions;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
     private String TransactionDate;
     private String Product;
     private double Price;
